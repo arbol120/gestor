@@ -25,10 +25,11 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.ht
 app.get('/productos.html', (req, res) => res.sendFile(path.join(__dirname, '../public/productos.html')));
 
 // Exportar para Vercel
+// EXPORTA EL APP (Vital para Vercel)
 module.exports = app;
 
-// Solo escuchar si no estamos en Vercel
+// SOLO arranca el puerto si NO estás en Vercel
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+  app.listen(PORT, () => console.log(`Local en puerto ${PORT}`));
 }
