@@ -1,71 +1,34 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 👉 SERVIR ARCHIVOS ESTÁTICOS
+// Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB Conectado'))
+  .catch(err => console.error('❌ Error de conexión:', err));
+
+// Servir archivos estáticos (Frontend)
 app.use(express.static(path.join(__dirname, '../public')));
 
-/* =====================
-   MOCK DATA
-===================== */
-let users = [{ id: 1, username: 'admin', password: '1234' }];
-let products = [];
+// RUTAS DE LA API
+app.use('/api/auth', require('../routes/auth.routes'));
+app.use('/api/products', require('../routes/product.routes'));
 
-/* =====================
-   AUTH MIDDLEWARE
-===================== */
-function auth(req, res, next) {
-  const token = req.headers.authorization?.replace('Bearer ', '');
-  if (!token) return res.status(401).json({ msg: 'No token' });
+// RUTAS PARA EL FRONTEND (SPA)
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
+app.get('/productos.html', (req, res) => res.sendFile(path.join(__dirname, '../public/productos.html')));
 
-  try {
-    jwt.verify(token, process.env.JWT_SECRET);
-    next();
-  } catch {
-    res.status(401).json({ msg: 'Token inválido' });
-  }
-}
-
-/* =====================
-   AUTH
-===================== */
-app.post('/api/auth/login', (req, res) => {
-  const { username, password } = req.body;
-
-  const user = users.find(
-    u => u.username === username && u.password === password
-  );
-
-  if (!user) return res.status(401).json({ msg: 'Credenciales incorrectas' });
-
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: '1h'
-  });
-
-  res.json({ token });
-});
-
-/* =====================
-   PRODUCTS
-===================== */
-app.get('/api/products', auth, (req, res) => {
-  res.json(products);
-});
-
-/* =====================
-   FRONTEND ROUTES
-===================== */
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
+// Exportar para Vercel
 module.exports = app;
+
+// Solo escuchar si no estamos en Vercel
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+}
