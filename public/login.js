@@ -1,33 +1,28 @@
+console.log('login.js cargado');
+
 async function login() {
-  try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: user.value,
-        password: pass.value
-      })
-    });
+  console.log('CLICK LOGIN');
 
-    if (!res.ok) {
-      alert('Credenciales incorrectas');
-      return;
-    }
+  const user = document.getElementById('user');
+  const pass = document.getElementById('pass');
 
-    const data = await res.json();
+  const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: user.value,
+      password: pass.value
+    })
+  });
 
-    if (!data.token) {
-      alert('No llegó el token');
-      return;
-    }
+  const data = await res.json();
+  console.log(data);
 
-    localStorage.setItem('token', data.token);
-
-    // 🔥 REDIRECCIÓN SEGURA
-    window.location.href = '/productos.html';
-
-  } catch (err) {
-    console.error(err);
-    alert('Error de servidor');
+  if (!data.token) {
+    alert('Credenciales incorrectas');
+    return;
   }
+
+  localStorage.setItem('token', data.token);
+  window.location.href = '/productos.html';
 }
