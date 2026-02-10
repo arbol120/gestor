@@ -1,17 +1,18 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 exports.register = async (req, res) => {
   const { username, password } = req.body;
-
-  if (!username || !password)
-    return res.status(400).json({ msg: 'Datos incompletos' });
+  if (!username || !password) return res.status(400).json({ msg: 'Datos incompletos' });
 
   const exists = await User.findOne({ username });
   if (exists) return res.status(400).json({ msg: 'Usuario ya existe' });
 
-  const user = new User({ username, password });
+  // ENCRIPTAR ANTES DE GUARDAR
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const user = new User({ username, password: hashedPassword });
   await user.save();
 
   res.status(201).json({ msg: 'Usuario registrado' });
