@@ -1,11 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Login</title>
-
-  <!-- IMPORTANTE: verifica la ruta -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,12 +10,13 @@
   <div class="login-container">
     <h2>Login</h2>
 
-    <form>
-      <input type="text" placeholder="Usuario" required>
-      <input type="password" placeholder="Password" required>
+    <form onsubmit="event.preventDefault(); login();">
+      <input id="user" type="text" placeholder="Usuario" required>
+      <input id="pass" type="password" placeholder="Password" required>
       <button type="submit">ENTRAR</button>
     </form>
   </div>
 
+  <script src="login.js"></script>
 </body>
 </html>
