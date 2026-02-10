@@ -1,25 +1,14 @@
-    <!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Gestor de Productos</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <h1>Gestor de Productos</h1>
-
-  <div id="productsDiv">
-    <input type="text" id="prodName" placeholder="Nombre">
-    <input type="text" id="prodDesc" placeholder="Descripción">
-    <input type="number" id="prodPrice" placeholder="Precio">
-    <button id="createProductBtn">Agregar Producto</button>
-
-    <ul id="productList"></ul>
-
-    <button id="logoutBtn">Cerrar Sesión</button>
-  </div>
-
+  <h2>Productos</h2>
+  <input id="name" placeholder="Nombre">
+  <input id="price" placeholder="Precio">
+  <button onclick="add()">Agregar</button>
+  <ul id="list"></ul>
   <script src="script.js"></script>
 </body>
 </html>

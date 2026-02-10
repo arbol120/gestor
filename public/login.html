@@ -2,26 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Gestor de Productos</title>
+  <title>Login</title>
+
+  <!-- IMPORTANTE: verifica la ruta -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Iniciar Sesión</h1>
+  <div class="login-container">
+    <h2>Login</h2>
 
-  <div id="loginDiv">
-    <input type="text" id="loginUsername" placeholder="Usuario">
-    <input type="password" id="loginPassword" placeholder="Contraseña">
-    <button id="loginBtn">Entrar</button>
+    <form>
+      <input type="text" placeholder="Usuario" required>
+      <input type="password" placeholder="Password" required>
+      <button type="submit">ENTRAR</button>
+    </form>
   </div>
 
-  <div id="registerDiv">
-    <h2>Registro</h2>
-    <input type="text" id="regUsername" placeholder="Usuario">
-    <input type="password" id="regPassword" placeholder="Contraseña">
-    <button id="registerBtn">Registrar</button>
-  </div>
-
-  <script src="login.js"></script>
 </body>
 </html>
